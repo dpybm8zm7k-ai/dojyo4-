@@ -1,0 +1,2783 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#080808">
+
+<title>CASINO TABLE CONTROL</title>
+
+<style>
+
+* {
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+}
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    min-height: 100%;
+}
+
+body {
+    background: #080808;
+    color: #ffffff;
+    font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        "Hiragino Kaku Gothic ProN",
+        "Yu Gothic",
+        sans-serif;
+}
+
+button {
+    font-family: inherit;
+}
+
+.hidden {
+    display: none !important;
+}
+
+
+/* =====================================================
+   START SCREEN
+===================================================== */
+
+#startScreen {
+    min-height: 100vh;
+    min-height: 100dvh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 30px;
+}
+
+.start-container {
+    width: min(950px, 100%);
+    text-align: center;
+}
+
+.logo {
+    font-size: clamp(38px, 7vw, 64px);
+    font-weight: 800;
+    letter-spacing: 10px;
+}
+
+.logo-sub {
+    margin-top: 8px;
+    color: #777;
+    font-size: 13px;
+    letter-spacing: 4px;
+}
+
+.firebase-status {
+    margin-top: 18px;
+    color: #666;
+    font-size: 12px;
+}
+
+.firebase-status.connected {
+    color: #25c76a;
+}
+
+.firebase-status.error {
+    color: #e33b3b;
+}
+
+.role-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 25px;
+    margin-top: 55px;
+}
+
+.role-button {
+    min-height: 230px;
+    background: #111;
+    border: 1px solid #303030;
+    border-radius: 18px;
+    color: white;
+    cursor: pointer;
+    transition:
+        background 0.2s,
+        border-color 0.2s,
+        transform 0.1s;
+}
+
+.role-button:hover {
+    background: #181818;
+    border-color: #666;
+}
+
+.role-button:active {
+    transform: scale(0.98);
+}
+
+.role-title {
+    font-size: 30px;
+    font-weight: 700;
+    margin-bottom: 14px;
+}
+
+.role-description {
+    color: #888;
+    font-size: 14px;
+}
+
+
+/* =====================================================
+   DEALER SELECT
+===================================================== */
+
+#dealerSelectScreen {
+    min-height: 100vh;
+    min-height: 100dvh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 25px;
+}
+
+.dealer-select-container {
+    width: min(1000px, 100%);
+}
+
+.dealer-select-title {
+    text-align: center;
+    font-size: 30px;
+    font-weight: bold;
+    margin-bottom: 35px;
+}
+
+.dealer-select-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+}
+
+.dealer-select-button {
+    min-height: 130px;
+    background: #111;
+    border: 1px solid #333;
+    border-radius: 14px;
+    color: white;
+    cursor: pointer;
+    transition: 0.15s;
+}
+
+.dealer-select-button:hover {
+    background: #181818;
+    border-color: #666;
+}
+
+.dealer-select-button:active {
+    transform: scale(0.98);
+}
+
+.dealer-select-number {
+    color: #666;
+    font-size: 12px;
+    margin-bottom: 8px;
+}
+
+.dealer-select-name {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.dealer-back-button {
+    display: block;
+    width: 200px;
+    margin: 25px auto 0;
+    padding: 14px;
+    background: #181818;
+    border: 1px solid #444;
+    border-radius: 10px;
+    color: white;
+    cursor: pointer;
+}
+
+
+/* =====================================================
+   MAIN
+===================================================== */
+
+#mainScreen {
+    min-height: 100vh;
+    min-height: 100dvh;
+}
+
+.header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    height: 78px;
+    padding: 0 30px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: rgba(10, 10, 10, 0.96);
+    border-bottom: 1px solid #292929;
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+}
+
+.header-title {
+    font-size: 21px;
+    font-weight: bold;
+    letter-spacing: 2px;
+}
+
+.header-role {
+    color: #777;
+    font-size: 13px;
+}
+
+.back-button {
+    background: #181818;
+    border: 1px solid #3a3a3a;
+    border-radius: 8px;
+    color: white;
+    padding: 10px 17px;
+    cursor: pointer;
+}
+
+.content {
+    width: min(1400px, 100%);
+    margin: 0 auto;
+    padding: 30px;
+}
+
+
+/* =====================================================
+   RECEPTION SUMMARY
+===================================================== */
+
+.dashboard-summary {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+    margin-bottom: 28px;
+}
+
+.summary-card {
+    background: #111;
+    border: 1px solid #292929;
+    border-radius: 12px;
+    padding: 20px;
+}
+
+.summary-label {
+    color: #707070;
+    font-size: 12px;
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+}
+
+.summary-number {
+    font-size: 35px;
+    font-weight: bold;
+}
+
+
+/* =====================================================
+   TABLE GRID
+===================================================== */
+
+.table-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 20px;
+}
+
+.table-card {
+    min-height: 220px;
+    background: #111;
+    border: 2px solid #333;
+    border-radius: 16px;
+    padding: 24px;
+    position: relative;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition:
+        background 0.15s,
+        transform 0.1s;
+}
+
+.table-card:hover {
+    background: #171717;
+}
+
+.table-card:active {
+    transform: scale(0.985);
+}
+
+.table-card.available {
+    border-color: #159447;
+}
+
+.table-card.occupied {
+    border-color: #c92b2b;
+}
+
+.table-id {
+    position: absolute;
+    top: 18px;
+    right: 20px;
+    color: #444;
+    font-size: 11px;
+}
+
+.table-type {
+    color: #777;
+    font-size: 12px;
+    letter-spacing: 1px;
+}
+
+.table-name {
+    font-size: 25px;
+    font-weight: bold;
+    margin-top: 8px;
+    padding-right: 35px;
+}
+
+.status-area {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    margin-top: 30px;
+}
+
+.status {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.available .status {
+    color: #25c76a;
+}
+
+.occupied .status {
+    color: #e33b3b;
+}
+
+.timer {
+    color: #ddd;
+    font-family: monospace;
+    font-size: 20px;
+}
+
+
+/* =====================================================
+   DEALER PANEL
+===================================================== */
+
+.dealer-panel {
+    width: min(850px, 100%);
+    margin: 0 auto;
+}
+
+.my-table {
+    background: #111;
+    border: 2px solid #333;
+    border-radius: 18px;
+    padding: 30px;
+}
+
+.my-table.available {
+    border-color: #159447;
+}
+
+.my-table.occupied {
+    border-color: #c92b2b;
+}
+
+.my-table-title {
+    color: #777;
+    font-size: 12px;
+    letter-spacing: 1px;
+}
+
+.my-table-name {
+    font-size: 37px;
+    font-weight: bold;
+    margin-top: 8px;
+    margin-bottom: 30px;
+}
+
+.large-status {
+    background: #080808;
+    border-radius: 13px;
+    padding: 25px;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.large-status-text {
+    font-size: 27px;
+    font-weight: bold;
+}
+
+.my-table.available .large-status-text {
+    color: #25c76a;
+}
+
+.my-table.occupied .large-status-text {
+    color: #e33b3b;
+}
+
+.large-timer {
+    margin-top: 9px;
+    color: #ddd;
+    font-family: monospace;
+    font-size: 52px;
+}
+
+.dealer-control-button {
+    width: 100%;
+    padding: 20px;
+    border: none;
+    border-radius: 12px;
+    color: white;
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.start-button {
+    background: #159447;
+}
+
+.start-button:hover {
+    background: #1ba952;
+}
+
+.stop-button {
+    background: #b52222;
+}
+
+.stop-button:hover {
+    background: #cc2929;
+}
+
+.check-button {
+    width: 100%;
+    margin-top: 15px;
+    padding: 17px;
+    background: #181818;
+    border: 1px solid #444;
+    border-radius: 12px;
+    color: white;
+    font-size: 17px;
+    cursor: pointer;
+}
+
+.check-button:hover {
+    background: #222;
+}
+
+
+/* =====================================================
+   OTHER TABLES
+===================================================== */
+
+.other-tables {
+    margin-top: 35px;
+}
+
+.section-title {
+    color: #aaa;
+    font-size: 16px;
+    letter-spacing: 1px;
+    margin-bottom: 15px;
+}
+
+.mini-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+}
+
+.mini-card {
+    background: #111;
+    border: 1px solid #292929;
+    border-left: 5px solid #555;
+    border-radius: 10px;
+    padding: 17px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+}
+
+.mini-card.available {
+    border-left-color: #159447;
+}
+
+.mini-card.occupied {
+    border-left-color: #c92b2b;
+}
+
+.mini-name {
+    font-weight: bold;
+}
+
+.mini-type {
+    color: #666;
+    font-size: 11px;
+    margin-top: 4px;
+}
+
+.mini-status {
+    font-family: monospace;
+    font-size: 13px;
+    white-space: nowrap;
+}
+
+.mini-card.available .mini-status {
+    color: #25c76a;
+}
+
+.mini-card.occupied .mini-status {
+    color: #e33b3b;
+}
+
+
+/* =====================================================
+   MODAL
+===================================================== */
+
+.modal-background {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    background: rgba(0, 0, 0, 0.78);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.modal {
+    width: min(500px, 100%);
+    background: #111;
+    border: 1px solid #444;
+    border-radius: 18px;
+    padding: 30px;
+}
+
+.modal-title {
+    font-size: 25px;
+    font-weight: bold;
+}
+
+.modal-subtitle {
+    color: #777;
+    margin-top: 6px;
+    margin-bottom: 25px;
+}
+
+.modal-button {
+    width: 100%;
+    padding: 18px;
+    margin-top: 10px;
+    border-radius: 10px;
+    border: none;
+    color: white;
+    font-size: 17px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.modal-available {
+    background: #159447;
+}
+
+.modal-occupied {
+    background: #b52222;
+}
+
+.modal-cancel {
+    background: #222;
+    border: 1px solid #444;
+}
+
+
+/* =====================================================
+   LOADING
+===================================================== */
+
+.loading {
+    position: fixed;
+    inset: 0;
+    z-index: 200;
+    background: #080808;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.loading-text {
+    color: #aaa;
+    font-size: 14px;
+}
+
+
+/* =====================================================
+   RESPONSIVE
+===================================================== */
+
+@media (max-width: 850px) {
+
+    .table-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .dealer-select-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+}
+
+@media (max-width: 600px) {
+
+    .header {
+        height: 68px;
+        padding: 0 15px;
+    }
+
+    .header-title {
+        font-size: 16px;
+    }
+
+    .header-role {
+        font-size: 11px;
+    }
+
+    .content {
+        padding: 15px;
+    }
+
+    .dashboard-summary {
+        gap: 8px;
+    }
+
+    .summary-card {
+        padding: 13px;
+    }
+
+    .summary-number {
+        font-size: 25px;
+    }
+
+    .table-grid {
+        grid-template-columns: 1fr;
+        gap: 13px;
+    }
+
+    .table-card {
+        min-height: 190px;
+        padding: 21px;
+    }
+
+    .table-name {
+        font-size: 22px;
+    }
+
+    .large-timer {
+        font-size: 39px;
+    }
+
+    .my-table {
+        padding: 20px;
+    }
+
+    .my-table-name {
+        font-size: 29px;
+    }
+
+    .mini-grid {
+        grid-template-columns: 1fr;
+    }
+
+}
+
+@media (max-width: 430px) {
+
+    .role-grid {
+        grid-template-columns: 1fr;
+        margin-top: 40px;
+    }
+
+    .role-button {
+        min-height: 160px;
+    }
+
+    .dealer-select-grid {
+        grid-template-columns: 1fr;
+    }
+
+}
+
+
+/* =====================================================
+   STATUS ANIMATION
+===================================================== */
+
+@keyframes occupiedPulse {
+
+    0% {
+        box-shadow: 0 0 0 0 rgba(201, 43, 43, 0);
+    }
+
+    50% {
+        box-shadow: 0 0 25px 0 rgba(201, 43, 43, 0.12);
+    }
+
+    100% {
+        box-shadow: 0 0 0 0 rgba(201, 43, 43, 0);
+    }
+
+}
+
+.table-card.occupied {
+    animation: occupiedPulse 2s infinite;
+}
+
+</style>
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     LOADING SCREEN
+===================================================== -->
+
+<div id="loadingScreen" class="loading">
+
+    <div class="loading-text">
+        Firebaseに接続しています...
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     START SCREEN
+===================================================== -->
+
+<div id="startScreen" class="hidden">
+
+    <div class="start-container">
+
+        <div class="logo">
+            CASINO
+        </div>
+
+        <div class="logo-sub">
+            TABLE CONTROL SYSTEM
+        </div>
+
+        <div
+            id="firebaseStatus"
+            class="firebase-status">
+
+            Firebase接続中...
+
+        </div>
+
+
+        <div class="role-grid">
+
+            <button
+                class="role-button"
+                onclick="selectReception()">
+
+                <div class="role-title">
+                    受付
+                </div>
+
+                <div class="role-description">
+                    全テーブルの使用状況を管理
+                </div>
+
+            </button>
+
+
+            <button
+                class="role-button"
+                onclick="showDealerSelection()">
+
+                <div class="role-title">
+                    ディーラー
+                </div>
+
+                <div class="role-description">
+                    担当テーブルの使用状況を管理
+                </div>
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     DEALER SELECT SCREEN
+===================================================== -->
+
+<div
+    id="dealerSelectScreen"
+    class="hidden">
+
+    <div class="dealer-select-container">
+
+        <div class="dealer-select-title">
+            担当テーブルを選択
+        </div>
+
+
+        <div
+            id="dealerSelectGrid"
+            class="dealer-select-grid">
+        </div>
+
+
+        <button
+            class="dealer-back-button"
+            onclick="backToStart()">
+
+            戻る
+
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     MAIN SCREEN
+===================================================== -->
+
+<div
+    id="mainScreen"
+    class="hidden">
+
+
+    <!-- HEADER -->
+
+    <header class="header">
+
+        <div class="header-left">
+
+            <div class="header-title">
+                CASINO CONTROL
+            </div>
+
+            <div
+                id="headerRole"
+                class="header-role">
+
+                受付
+
+            </div>
+
+        </div>
+
+
+        <button
+            class="back-button"
+            onclick="backToStart()">
+
+            戻る
+
+        </button>
+
+    </header>
+
+
+    <!-- =================================================
+         RECEPTION SCREEN
+    ================================================== -->
+
+    <main
+        id="receptionScreen"
+        class="content hidden">
+
+
+        <div class="dashboard-summary">
+
+
+            <div class="summary-card">
+
+                <div class="summary-label">
+                    TOTAL TABLES
+                </div>
+
+                <div
+                    id="totalTables"
+                    class="summary-number">
+
+                    7
+
+                </div>
+
+            </div>
+
+
+            <div class="summary-card">
+
+                <div class="summary-label">
+                    AVAILABLE
+                </div>
+
+                <div
+                    id="availableTables"
+                    class="summary-number">
+
+                    7
+
+                </div>
+
+            </div>
+
+
+            <div class="summary-card">
+
+                <div class="summary-label">
+                    IN USE
+                </div>
+
+                <div
+                    id="occupiedTables"
+                    class="summary-number">
+
+                    0
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div
+            id="receptionTableGrid"
+            class="table-grid">
+        </div>
+
+
+    </main>
+
+
+    <!-- =================================================
+         DEALER SCREEN
+    ================================================== -->
+
+    <main
+        id="dealerScreen"
+        class="content hidden">
+
+
+        <div class="dealer-panel">
+
+
+            <div
+                id="myTableContainer"
+                class="my-table">
+
+
+                <div class="my-table-title">
+                    MY TABLE
+                </div>
+
+
+                <div
+                    id="myTableName"
+                    class="my-table-name">
+
+                    -
+
+                </div>
+
+
+                <div class="large-status">
+
+                    <div
+                        id="myTableStatus"
+                        class="large-status-text">
+
+                        -
+
+                    </div>
+
+
+                    <div
+                        id="myTableTimer"
+                        class="large-timer">
+
+                        00:00:00
+
+                    </div>
+
+                </div>
+
+
+                <button
+                    id="dealerControlButton"
+                    class="dealer-control-button start-button"
+                    onclick="toggleMyTable()">
+
+                    使用開始
+
+                </button>
+
+
+                <button
+                    class="check-button"
+                    onclick="toggleOtherTables()">
+
+                    使用状況確認
+
+                </button>
+
+            </div>
+
+
+            <div
+                id="otherTablesArea"
+                class="other-tables hidden">
+
+                <div class="section-title">
+                    OTHER TABLES
+                </div>
+
+
+                <div
+                    id="dealerOtherTables"
+                    class="mini-grid">
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </main>
+
+
+</div>
+
+
+<!-- =====================================================
+     STATUS MODAL
+===================================================== -->
+
+<div
+    id="statusModal"
+    class="modal-background hidden">
+
+
+    <div class="modal">
+
+        <div
+            id="modalTitle"
+            class="modal-title">
+
+            テーブル
+
+        </div>
+
+
+        <div class="modal-subtitle">
+            使用状況を変更してください
+        </div>
+
+
+        <button
+            class="modal-button modal-available"
+            onclick="setSelectedTableStatus(false)">
+
+            空きにする
+
+        </button>
+
+
+        <button
+            class="modal-button modal-occupied"
+            onclick="setSelectedTableStatus(true)">
+
+            使用中にする
+
+        </button>
+
+
+        <button
+            class="modal-button modal-cancel"
+            onclick="closeModal()">
+
+            キャンセル
+
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     FIREBASE MODULE
+===================================================== -->
+
+<script type="module">
+
+import {
+    initializeApp
+} from
+"https://www.gstatic.com/firebasejs/12.18.0/firebase-app.js";
+
+
+import {
+    getDatabase,
+    ref,
+    onValue,
+    set,
+    update,
+    serverTimestamp
+} from
+"https://www.gstatic.com/firebasejs/12.18.0/firebase-database.js";
+
+
+const firebaseConfig = {
+
+    apiKey:
+        "AIzaSyCh1dS522TL9HjGEHk7tCHXFWfJ0F1Qfx0",
+
+    authDomain:
+        "darts-01.firebaseapp.com",
+
+    databaseURL:
+        "https://darts-01-default-rtdb.asia-southeast1.firebasedatabase.app",
+
+    projectId:
+        "darts-01",
+
+    storageBucket:
+        "darts-01.firebasestorage.app",
+
+    messagingSenderId:
+        "936099490830",
+
+    appId:
+        "1:936099490830:web:bc3b39184138acbd1aa05f",
+
+    measurementId:
+        "G-JTX22B0QZQ"
+
+};
+
+
+try {
+
+    const app =
+        initializeApp(firebaseConfig);
+
+
+    const database =
+        getDatabase(app);
+
+
+    /*
+       既存ダーツシステムとの分離
+
+       このカジノシステムは
+       casinoTables 以下だけを使用する。
+    */
+
+    const casinoTablesRef =
+        ref(database, "casinoTables");
+
+
+    /*
+       他のscriptから利用できるようにする
+    */
+
+    window.firebaseDB =
+        database;
+
+    window.firebaseRef =
+        ref;
+
+    window.firebaseOnValue =
+        onValue;
+
+    window.firebaseSet =
+        set;
+
+    window.firebaseUpdate =
+        update;
+
+    window.firebaseServerTimestamp =
+        serverTimestamp;
+
+
+    /*
+       カジノ専用参照
+    */
+
+    window.casinoTablesRef =
+        casinoTablesRef;
+
+
+    window.firebaseReady =
+        true;
+
+    window.firebaseDatabase =
+        database;
+
+
+    /*
+       メインscriptへ通知
+    */
+
+    if (
+        typeof window.firebaseInitialized ===
+        "function"
+    ) {
+
+        window.firebaseInitialized();
+
+    }
+
+
+} catch (error) {
+
+    console.error(
+        "Firebase initialization error:",
+        error
+    );
+
+
+    window.firebaseReady =
+        false;
+
+
+    if (
+        typeof window.firebaseInitializationError ===
+        "function"
+    ) {
+
+        window.firebaseInitializationError(
+            error
+        );
+
+    }
+
+}
+
+</script>
+
+
+<!-- =====================================================
+     MAIN JAVASCRIPT
+===================================================== -->
+
+<script>
+
+
+/* =====================================================
+   TABLE DEFINITIONS
+===================================================== */
+
+const defaultTables = {
+
+    bjp1: {
+
+        id: "bjp1",
+
+        name: "BLACKJACK / POKER 1",
+
+        type: "BLACKJACK / POKER",
+
+        occupied: false,
+
+        startedAt: null
+
+    },
+
+
+    bjp2: {
+
+        id: "bjp2",
+
+        name: "BLACKJACK / POKER 2",
+
+        type: "BLACKJACK / POKER",
+
+        occupied: false,
+
+        startedAt: null
+
+    },
+
+
+    bjp3: {
+
+        id: "bjp3",
+
+        name: "BLACKJACK / POKER 3",
+
+        type: "BLACKJACK / POKER",
+
+        occupied: false,
+
+        startedAt: null
+
+    },
+
+
+    roulette1: {
+
+        id: "roulette1",
+
+        name: "ROULETTE 1",
+
+        type: "ROULETTE",
+
+        occupied: false,
+
+        startedAt: null
+
+    },
+
+
+    roulette2: {
+
+        id: "roulette2",
+
+        name: "ROULETTE 2",
+
+        type: "ROULETTE",
+
+        occupied: false,
+
+        startedAt: null
+
+    },
+
+
+    darts1: {
+
+        id: "darts1",
+
+        name: "DARTS 1",
+
+        type: "DARTS",
+
+        occupied: false,
+
+        startedAt: null
+
+    },
+
+
+    darts2: {
+
+        id: "darts2",
+
+        name: "DARTS 2",
+
+        type: "DARTS",
+
+        occupied: false,
+
+        startedAt: null
+
+    }
+
+};
+
+
+/* =====================================================
+   STATE
+===================================================== */
+
+let tables = {};
+
+let currentRole = null;
+
+let currentDealerTable = null;
+
+let selectedTable = null;
+
+let firebaseListenerStarted = false;
+
+
+/* =====================================================
+   FIREBASE INITIALIZED
+===================================================== */
+
+window.firebaseInitialized = function() {
+
+    const status =
+        document.getElementById(
+            "firebaseStatus"
+        );
+
+
+    if (status) {
+
+        status.textContent =
+            "● FIREBASE CONNECTED";
+
+        status.classList.add(
+            "connected"
+        );
+
+    }
+
+
+    startFirebaseListener();
+
+};
+
+
+/* =====================================================
+   FIREBASE ERROR
+===================================================== */
+
+window.firebaseInitializationError =
+function(error) {
+
+    console.error(error);
+
+
+    const status =
+        document.getElementById(
+            "firebaseStatus"
+        );
+
+
+    if (status) {
+
+        status.textContent =
+            "● FIREBASE CONNECTION ERROR";
+
+        status.classList.add(
+            "error"
+        );
+
+    }
+
+
+    hideLoading();
+
+};
+
+
+/* =====================================================
+   HIDE LOADING
+===================================================== */
+
+function hideLoading() {
+
+    document
+        .getElementById(
+            "loadingScreen"
+        )
+        .classList.add(
+            "hidden"
+        );
+
+
+    document
+        .getElementById(
+            "startScreen"
+        )
+        .classList.remove(
+            "hidden"
+        );
+
+}
+
+
+/* =====================================================
+   FIREBASE LISTENER
+===================================================== */
+
+function startFirebaseListener() {
+
+    if (firebaseListenerStarted) {
+        return;
+    }
+
+
+    firebaseListenerStarted = true;
+
+
+    const database =
+        window.firebaseDatabase;
+
+
+    if (!database) {
+        return;
+    }
+
+
+    const tablesRef =
+        window.casinoTablesRef;
+
+
+    window.firebaseOnValue(
+
+        tablesRef,
+
+        snapshot => {
+
+            const data =
+                snapshot.val();
+
+
+            /*
+               初回のみデータを作成
+            */
+
+            if (!data) {
+
+                const initialData = {};
+
+
+                Object.values(
+                    defaultTables
+                ).forEach(table => {
+
+                    initialData[
+                        table.id
+                    ] = {
+
+                        id: table.id,
+
+                        name: table.name,
+
+                        type: table.type,
+
+                        occupied: false,
+
+                        startedAt: null
+
+                    };
+
+                });
+
+
+                window.firebaseSet(
+                    tablesRef,
+                    initialData
+                );
+
+                return;
+
+            }
+
+
+            tables = data;
+
+
+            /*
+               足りないテーブルを補完
+            */
+
+            Object.values(
+                defaultTables
+            ).forEach(defaultTable => {
+
+                if (
+                    !tables[
+                        defaultTable.id
+                    ]
+                ) {
+
+                    tables[
+                        defaultTable.id
+                    ] = {
+                        ...defaultTable
+                    };
+
+                }
+
+            });
+
+
+            refreshCurrentScreen();
+
+        },
+
+        error => {
+
+            console.error(
+                "Realtime Database error:",
+                error
+            );
+
+        }
+
+    );
+
+}
+
+
+/* =====================================================
+   REFRESH
+===================================================== */
+
+function refreshCurrentScreen() {
+
+    if (
+        currentRole ===
+        "reception"
+    ) {
+
+        renderReception();
+
+    }
+
+
+    if (
+        currentRole ===
+        "dealer"
+    ) {
+
+        renderDealer();
+
+    }
+
+}
+
+
+/* =====================================================
+   RECEPTION
+===================================================== */
+
+function selectReception() {
+
+    currentRole =
+        "reception";
+
+    currentDealerTable =
+        null;
+
+
+    document
+        .getElementById(
+            "startScreen"
+        )
+        .classList.add(
+            "hidden"
+        );
+
+
+    document
+        .getElementById(
+            "dealerSelectScreen"
+        )
+        .classList.add(
+            "hidden"
+        );
+
+
+    document
+        .getElementById(
+            "mainScreen"
+        )
+        .classList.remove(
+            "hidden"
+        );
+
+
+    document
+        .getElementById(
+            "receptionScreen"
+        )
+        .classList.remove(
+            "hidden"
+        );
+
+
+    document
+        .getElementById(
+            "dealerScreen"
+        )
+        .classList.add(
+            "hidden"
+        );
+
+
+    document
+        .getElementById(
+            "headerRole"
+        )
+        .textContent =
+        "受付";
+
+
+    renderReception();
+
+}
+
+
+/* =====================================================
+   DEALER SELECTION
+===================================================== */
+
+function showDealerSelection() {
+
+    document
+        .getElementById(
+            "startScreen"
+        )
+        .classList.add(
+            "hidden"
+        );
+
+
+    document
+        .getElementById(
+            "dealerSelectScreen"
+        )
+        .classList.remove(
+            "hidden"
+        );
+
+
+    renderDealerSelection();
+
+}
+
+
+/* =====================================================
+   DEALER SELECTION LIST
+===================================================== */
+
+function renderDealerSelection() {
+
+    const grid =
+        document.getElementById(
+            "dealerSelectGrid"
+        );
+
+
+    grid.innerHTML = "";
+
+
+    Object.values(
+        defaultTables
+    ).forEach((table, index) => {
+
+        const button =
+            document.createElement(
+                "button"
+            );
+
+
+        button.className =
+            "dealer-select-button";
+
+
+        button.onclick =
+            () => selectDealer(
+                table.id
+            );
+
+
+        button.innerHTML = `
+
+            <div class="dealer-select-number">
+                TABLE ${index + 1}
+            </div>
+
+            <div class="dealer-select-name">
+                ${table.name}
+            </div>
+
+        `;
+
+
+        grid.appendChild(
+            button
+        );
+
+    });
+
+}
+
+
+/* =====================================================
+   SELECT DEALER
+===================================================== */
+
+function selectDealer(tableId) {
+
+    currentRole =
+        "dealer";
+
+    currentDealerTable =
+        tableId;
+
+
+    document
+        .getElementById(
+            "startScreen"
+        )
+        .classList.add(
+            "hidden"
+        );
+
+
+    document
+        .getElementById(
+            "dealerSelectScreen"
+        )
+        .classList.add(
+            "hidden"
+        );
+
+
+    document
+        .getElementById(
+            "mainScreen"
+        )
+        .classList.remove(
+            "hidden"
+        );
+
+
+    document
+        .getElementById(
+            "receptionScreen"
+        )
+        .classList.add(
+            "hidden"
+        );
+
+
+    document
+        .getElementById(
+            "dealerScreen"
+        )
+        .classList.remove(
+            "hidden"
+        );
+
+
+    document
+        .getElementById(
+            "headerRole"
+        )
+        .textContent =
+        "ディーラー";
+
+
+    renderDealer();
+
+}
+
+
+/* =====================================================
+   BACK
+===================================================== */
+
+function backToStart() {
+
+    currentRole =
+        null;
+
+    currentDealerTable =
+        null;
+
+    selectedTable =
+        null;
+
+
+    document
+        .getElementById(
+            "mainScreen"
+        )
+        .classList.add(
+            "hidden"
+        );
+
+
+    document
+        .getElementById(
+            "dealerSelectScreen"
+        )
+        .classList.add(
+            "hidden"
+        );
+
+
+    document
+        .getElementById(
+            "startScreen"
+        )
+        .classList.remove(
+            "hidden"
+        );
+
+}
+
+
+/* =====================================================
+   RECEPTION TABLE RENDER
+===================================================== */
+
+function renderReception() {
+
+    const grid =
+        document.getElementById(
+            "receptionTableGrid"
+        );
+
+
+    if (!grid) {
+        return;
+    }
+
+
+    grid.innerHTML = "";
+
+
+    Object.values(
+        tables
+    ).forEach(table => {
+
+        const card =
+            document.createElement(
+                "div"
+            );
+
+
+        card.className =
+            "table-card " +
+            (
+                table.occupied
+                    ? "occupied"
+                    : "available"
+            );
+
+
+        card.onclick =
+            () => openTableModal(
+                table.id
+            );
+
+
+        let elapsed =
+            "00:00:00";
+
+
+        if (
+            table.occupied &&
+            table.startedAt
+        ) {
+
+            elapsed =
+                formatElapsed(
+                    Date.now() -
+                    Number(
+                        table.startedAt
+                    )
+                );
+
+        }
+
+
+        card.innerHTML = `
+
+            <div>
+
+                <div class="table-id">
+                    ${table.id}
+                </div>
+
+                <div class="table-type">
+                    ${table.type}
+                </div>
+
+                <div class="table-name">
+                    ${table.name}
+                </div>
+
+            </div>
+
+
+            <div class="status-area">
+
+                <div class="status">
+
+                    ${
+                        table.occupied
+                            ? "使用中"
+                            : "空き"
+                    }
+
+                </div>
+
+
+                <div class="timer">
+                    ${elapsed}
+                </div>
+
+            </div>
+
+        `;
+
+
+        grid.appendChild(
+            card
+        );
+
+    });
+
+
+    updateSummary();
+
+}
+
+
+/* =====================================================
+   SUMMARY
+===================================================== */
+
+function updateSummary() {
+
+    const tableList =
+        Object.values(
+            tables
+        );
+
+
+    const occupied =
+        tableList.filter(
+            table =>
+                table.occupied
+        ).length;
+
+
+    const available =
+        tableList.length -
+        occupied;
+
+
+    document.getElementById(
+        "totalTables"
+    ).textContent =
+        tableList.length;
+
+
+    document.getElementById(
+        "availableTables"
+    ).textContent =
+        available;
+
+
+    document.getElementById(
+        "occupiedTables"
+    ).textContent =
+        occupied;
+
+}
+
+
+/* =====================================================
+   DEALER RENDER
+===================================================== */
+
+function renderDealer() {
+
+    if (!currentDealerTable) {
+        return;
+    }
+
+
+    const table =
+        tables[
+            currentDealerTable
+        ];
+
+
+    if (!table) {
+        return;
+    }
+
+
+    document.getElementById(
+        "myTableName"
+    ).textContent =
+        table.name;
+
+
+    const container =
+        document.getElementById(
+            "myTableContainer"
+        );
+
+
+    container.classList.remove(
+        "available",
+        "occupied"
+    );
+
+
+    container.classList.add(
+        table.occupied
+            ? "occupied"
+            : "available"
+    );
+
+
+    document.getElementById(
+        "myTableStatus"
+    ).textContent =
+        table.occupied
+            ? "使用中"
+            : "空き";
+
+
+    let elapsed =
+        "00:00:00";
+
+
+    if (
+        table.occupied &&
+        table.startedAt
+    ) {
+
+        elapsed =
+            formatElapsed(
+                Date.now() -
+                Number(
+                    table.startedAt
+                )
+            );
+
+    }
+
+
+    document.getElementById(
+        "myTableTimer"
+    ).textContent =
+        elapsed;
+
+
+    const button =
+        document.getElementById(
+            "dealerControlButton"
+        );
+
+
+    if (table.occupied) {
+
+        button.textContent =
+            "使用終了";
+
+
+        button.className =
+            "dealer-control-button stop-button";
+
+    } else {
+
+        button.textContent =
+            "使用開始";
+
+
+        button.className =
+            "dealer-control-button start-button";
+
+    }
+
+
+    renderOtherTables();
+
+}
+
+
+/* =====================================================
+   OTHER TABLES
+===================================================== */
+
+function toggleOtherTables() {
+
+    const area =
+        document.getElementById(
+            "otherTablesArea"
+        );
+
+
+    area.classList.toggle(
+        "hidden"
+    );
+
+
+    renderOtherTables();
+
+}
+
+
+/* =====================================================
+   RENDER OTHER TABLES
+===================================================== */
+
+function renderOtherTables() {
+
+    const container =
+        document.getElementById(
+            "dealerOtherTables"
+        );
+
+
+    if (!container) {
+        return;
+    }
+
+
+    container.innerHTML = "";
+
+
+    Object.values(
+        tables
+    )
+    .filter(
+        table =>
+            table.id !==
+            currentDealerTable
+    )
+    .forEach(table => {
+
+        const card =
+            document.createElement(
+                "div"
+            );
+
+
+        card.className =
+            "mini-card " +
+            (
+                table.occupied
+                    ? "occupied"
+                    : "available"
+            );
+
+
+        let elapsed =
+            "";
+
+
+        if (
+            table.occupied &&
+            table.startedAt
+        ) {
+
+            elapsed =
+                formatElapsed(
+                    Date.now() -
+                    Number(
+                        table.startedAt
+                    )
+                );
+
+        }
+
+
+        card.innerHTML = `
+
+            <div>
+
+                <div class="mini-name">
+                    ${table.name}
+                </div>
+
+                <div class="mini-type">
+                    ${table.type}
+                </div>
+
+            </div>
+
+
+            <div class="mini-status">
+
+                ${
+                    table.occupied
+                        ? "使用中 " + elapsed
+                        : "空き"
+                }
+
+            </div>
+
+        `;
+
+
+        container.appendChild(
+            card
+        );
+
+    });
+
+}
+
+
+/* =====================================================
+   DEALER TABLE CONTROL
+===================================================== */
+
+async function toggleMyTable() {
+
+    if (!currentDealerTable) {
+        return;
+    }
+
+
+    const table =
+        tables[
+            currentDealerTable
+        ];
+
+
+    if (!table) {
+        return;
+    }
+
+
+    if (
+        !window.firebaseReady ||
+        !window.firebaseDatabase
+    ) {
+
+        alert(
+            "Firebaseに接続されていません。"
+        );
+
+        return;
+
+    }
+
+
+    const tableRef =
+        window.firebaseRef(
+            window.firebaseDatabase,
+            "casinoTables/" +
+            currentDealerTable
+        );
+
+
+    try {
+
+        if (table.occupied) {
+
+            await window.firebaseUpdate(
+                tableRef,
+                {
+                    occupied: false,
+                    startedAt: null
+                }
+            );
+
+        } else {
+
+            await window.firebaseUpdate(
+                tableRef,
+                {
+                    occupied: true,
+                    startedAt:
+                        window.firebaseServerTimestamp()
+                }
+            );
+
+        }
+
+    } catch (error) {
+
+        console.error(
+            "Table update error:",
+            error
+        );
+
+
+        alert(
+            "テーブル状態の更新に失敗しました。"
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   RECEPTION MODAL
+===================================================== */
+
+function openTableModal(tableId) {
+
+    selectedTable =
+        tableId;
+
+
+    const table =
+        tables[tableId];
+
+
+    if (!table) {
+        return;
+    }
+
+
+    document.getElementById(
+        "modalTitle"
+    ).textContent =
+        table.name;
+
+
+    document.getElementById(
+        "statusModal"
+    ).classList.remove(
+        "hidden"
+    );
+
+}
+
+
+/* =====================================================
+   CLOSE MODAL
+===================================================== */
+
+function closeModal() {
+
+    selectedTable =
+        null;
+
+
+    document.getElementById(
+        "statusModal"
+    ).classList.add(
+        "hidden"
+    );
+
+}
+
+
+/* =====================================================
+   RECEPTION CHANGE STATUS
+===================================================== */
+
+async function setSelectedTableStatus(
+    occupied
+) {
+
+    if (!selectedTable) {
+        return;
+    }
+
+
+    const table =
+        tables[
+            selectedTable
+        ];
+
+
+    if (!table) {
+        return;
+    }
+
+
+    if (
+        !window.firebaseReady ||
+        !window.firebaseDatabase
+    ) {
+
+        alert(
+            "Firebaseに接続されていません。"
+        );
+
+        return;
+
+    }
+
+
+    const tableRef =
+        window.firebaseRef(
+            window.firebaseDatabase,
+            "casinoTables/" +
+            selectedTable
+        );
+
+
+    try {
+
+        if (occupied) {
+
+            /*
+                すでに使用中なら
+                タイマーをリセットしない
+            */
+
+            if (table.occupied) {
+
+                closeModal();
+
+                return;
+
+            }
+
+
+            await window.firebaseUpdate(
+                tableRef,
+                {
+                    occupied: true,
+                    startedAt:
+                        window.firebaseServerTimestamp()
+                }
+            );
+
+        } else {
+
+            await window.firebaseUpdate(
+                tableRef,
+                {
+                    occupied: false,
+                    startedAt: null
+                }
+            );
+
+        }
+
+
+        closeModal();
+
+    } catch (error) {
+
+        console.error(
+            "Reception update error:",
+            error
+        );
+
+
+        alert(
+            "テーブル状態の更新に失敗しました。"
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   TIMER FORMAT
+===================================================== */
+
+function formatElapsed(
+    milliseconds
+) {
+
+    if (
+        !milliseconds ||
+        milliseconds < 0
+    ) {
+
+        return "00:00:00";
+
+    }
+
+
+    const totalSeconds =
+        Math.floor(
+            milliseconds / 1000
+        );
+
+
+    const hours =
+        Math.floor(
+            totalSeconds / 3600
+        );
+
+
+    const minutes =
+        Math.floor(
+            (totalSeconds % 3600) / 60
+        );
+
+
+    const seconds =
+        totalSeconds % 60;
+
+
+    return [
+
+        String(hours).padStart(
+            2,
+            "0"
+        ),
+
+        String(minutes).padStart(
+            2,
+            "0"
+        ),
+
+        String(seconds).padStart(
+            2,
+            "0"
+        )
+
+    ].join(":");
+
+}
+
+
+/* =====================================================
+   TIMER REFRESH
+===================================================== */
+
+setInterval(() => {
+
+    if (
+        currentRole ===
+        "reception"
+    ) {
+
+        renderReception();
+
+    }
+
+
+    if (
+        currentRole ===
+        "dealer"
+    ) {
+
+        renderDealer();
+
+    }
+
+}, 1000);
+
+
+/* =====================================================
+   MODAL BACKGROUND CLICK
+===================================================== */
+
+document
+    .getElementById(
+        "statusModal"
+    )
+    .addEventListener(
+        "click",
+        event => {
+
+            if (
+                event.target.id ===
+                "statusModal"
+            ) {
+
+                closeModal();
+
+            }
+
+        }
+    );
+
+
+/* =====================================================
+   INITIALIZE
+===================================================== */
+
+window.addEventListener(
+    "load",
+    () => {
+
+        /*
+           Firebase Moduleの読み込みを
+           最大10秒待つ
+        */
+
+        let waitCount = 0;
+
+
+        const waitTimer =
+            setInterval(
+                () => {
+
+                    waitCount++;
+
+
+                    if (
+                        window.firebaseReady ===
+                        true
+                    ) {
+
+                        clearInterval(
+                            waitTimer
+                        );
+
+                        hideLoading();
+
+                        return;
+
+                    }
+
+
+                    if (
+                        window.firebaseReady ===
+                        false
+                    ) {
+
+                        clearInterval(
+                            waitTimer
+                        );
+
+                        hideLoading();
+
+                        return;
+
+                    }
+
+
+                    if (
+                        waitCount >= 100
+                    ) {
+
+                        clearInterval(
+                            waitTimer
+                        );
+
+                        hideLoading();
+
+                    }
+
+                },
+                100
+            );
+
+    }
+);
+
+</script>
+
+
+</body>
+</html>
